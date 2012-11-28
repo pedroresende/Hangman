@@ -6,6 +6,7 @@
     <parameters>
         <parameter key="sensio_hangman.game_context.class">Sensio\Bundle\HangmanBundle\Game\GameContext</parameter>
         <parameter key="sensio_hangman.word_list">Sensio\Bundle\HangmanBundle\Game\WordList</parameter>
+        <parameter key="sensio_hangman.twig.gravatar_extension.class">Sensio\Bundle\HangmanBundle\Twig\Extension\GravatarExtension</parameter>
     </parameters>
 
     <services>
@@ -17,6 +18,12 @@
         <service id="sensio_hangman.game_context"
             class="%sensio_hangman.game_context.class%">
             <argument type="service" id="session" />
+        </service>
+
+        <service id="sensio_hangman.twig.gravatar_extension"
+            class="%sensio_hangman.twig.gravatar_extension.class%"
+            public ="false">
+            <tag name="twig.extension"/>
         </service>
     </services>
 </container>

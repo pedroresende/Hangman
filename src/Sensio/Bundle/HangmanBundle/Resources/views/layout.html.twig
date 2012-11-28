@@ -40,6 +40,12 @@
                     {% block body %}{% endblock %}
                 </div>
                 <div id="sidebar">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <h3>Welcome {{ app.user.username }}</h3>
+                        <div>
+                            <img src="{{ gravatar(app.user.email, 200) }}"
+                        </div>
+                    {% endif %}
                     <h3>Last Games</h3>
                     <div class="date-list">
                         <ul class="list date-list">
