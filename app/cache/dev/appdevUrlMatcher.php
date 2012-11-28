@@ -174,8 +174,8 @@ class appdevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
 
         // registration
         if ($pathinfo === '/create') {
-            if ($this->context->getMethod() != 'POST') {
-                $allow[] = 'POST';
+            if (!in_array($this->context->getMethod(), array('POST', 'GET', 'HEAD'))) {
+                $allow = array_merge($allow, array('POST', 'GET', 'HEAD'));
                 goto not_registration;
             }
 
@@ -230,6 +230,19 @@ class appdevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             return array('_route' => 'login_check');
         }
         not_login_check:
+
+        if (0 === strpos($pathinfo, '/_internal')) {
+            // _internal
+            if (0 === strpos($pathinfo, '/_internal/secure') && preg_match('#^/_internal/secure/(?P<controller>[^/]+)/(?P<path>.+)\\.(?P<_format>[^.]+)$#s', $pathinfo, $matches)) {
+                return array_merge($this->mergeDefaults($matches, array (  '_controller' => 'Symfony\\Bundle\\FrameworkBundle\\Controller\\InternalController::indexAction',)), array('_route' => '_internal'));
+            }
+
+            // _internal_public
+            if (preg_match('#^/_internal/(?P<controller>[^/]+)/(?P<path>.+)\\.(?P<_format>[^.]+)$#s', $pathinfo, $matches)) {
+                return array_merge($this->mergeDefaults($matches, array (  '_controller' => 'Symfony\\Bundle\\FrameworkBundle\\Controller\\InternalController::indexAction',)), array('_route' => '_internal_public'));
+            }
+
+        }
 
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();
     }

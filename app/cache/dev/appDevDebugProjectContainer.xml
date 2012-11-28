@@ -118,6 +118,8 @@
       <parameter>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/config/validation.xml</parameter>
     </parameter>
     <parameter key="validator.mapping.loader.yaml_files_loader.mapping_files" type="collection"/>
+    <parameter key="esi.class">Symfony\Component\HttpKernel\HttpCache\Esi</parameter>
+    <parameter key="esi_listener.class">Symfony\Component\HttpKernel\EventListener\EsiListener</parameter>
     <parameter key="profiler.class">Symfony\Component\HttpKernel\Profiler\Profiler</parameter>
     <parameter key="profiler_listener.class">Symfony\Component\HttpKernel\EventListener\ProfilerListener</parameter>
     <parameter key="data_collector.config.class">Symfony\Component\HttpKernel\DataCollector\ConfigDataCollector</parameter>
@@ -459,8 +461,8 @@
     <parameter key="jms_di_extra.directories" type="collection"/>
     <parameter key="jms_di_extra.cache_dir">/var/www/Hangman/app/cache/dev/jms_diextra</parameter>
     <parameter key="jms_di_extra.doctrine_integration">true</parameter>
-    <parameter key="jms_di_extra.doctrine_integration.entity_manager.file">/var/www/Hangman/app/cache/dev/jms_diextra/doctrine/EntityManager_50b605724c3e3.php</parameter>
-    <parameter key="jms_di_extra.doctrine_integration.entity_manager.class">EntityManager50b605724c3e3_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager</parameter>
+    <parameter key="jms_di_extra.doctrine_integration.entity_manager.file">/var/www/Hangman/app/cache/dev/jms_diextra/doctrine/EntityManager_50b634c0020b4.php</parameter>
+    <parameter key="jms_di_extra.doctrine_integration.entity_manager.class">EntityManager50b634c0020b4_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager</parameter>
     <parameter key="security.secured_services" type="collection"/>
     <parameter key="security.access.method_interceptor.class">JMS\SecurityExtraBundle\Security\Authorization\Interception\MethodSecurityInterceptor</parameter>
     <parameter key="security.access.method_access_control" type="collection"/>
@@ -664,6 +666,10 @@
         <argument>Symfony\Bundle\FrameworkBundle\EventListener\SessionListener</argument>
       </call>
       <call method="addSubscriberService">
+        <argument>esi_listener</argument>
+        <argument>Symfony\Component\HttpKernel\EventListener\EsiListener</argument>
+      </call>
+      <call method="addSubscriberService">
         <argument>profiler_listener</argument>
         <argument>Symfony\Component\HttpKernel\EventListener\ProfilerListener</argument>
       </call>
@@ -761,7 +767,9 @@
     </service>
     <service id="translator.default" class="Symfony\Bundle\FrameworkBundle\Translation\Translator">
       <argument type="service" id="service_container"/>
-      <argument type="service" id="translator.selector"/>
+      <argument type="service">
+        <service class="Symfony\Component\Translation\MessageSelector" public="false"/>
+      </argument>
       <argument type="collection">
         <argument key="translation.loader.php" type="collection">
           <argument>php</argument>
@@ -799,11 +807,442 @@
         <argument key="cache_dir">/var/www/Hangman/app/cache/dev/translations</argument>
         <argument key="debug">true</argument>
       </argument>
+      <call method="setFallbackLocale">
+        <argument>en</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.es.xlf</argument>
+        <argument>es</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.it.xlf</argument>
+        <argument>it</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.id.xlf</argument>
+        <argument>id</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.pt.xlf</argument>
+        <argument>pt</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.fr.xlf</argument>
+        <argument>fr</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.ru.xlf</argument>
+        <argument>ru</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.en.xlf</argument>
+        <argument>en</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.et.xlf</argument>
+        <argument>et</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.fa.xlf</argument>
+        <argument>fa</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.lt.xlf</argument>
+        <argument>lt</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.hy.xlf</argument>
+        <argument>hy</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.de.xlf</argument>
+        <argument>de</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.hr.xlf</argument>
+        <argument>hr</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.ja.xlf</argument>
+        <argument>ja</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.pt_BR.xlf</argument>
+        <argument>pt_BR</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.nl.xlf</argument>
+        <argument>nl</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.hu.xlf</argument>
+        <argument>hu</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.uk.xlf</argument>
+        <argument>uk</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.sr_Latn.xlf</argument>
+        <argument>sr_Latn</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.bg.xlf</argument>
+        <argument>bg</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.sl.xlf</argument>
+        <argument>sl</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.sr_Cyrl.xlf</argument>
+        <argument>sr_Cyrl</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.da.xlf</argument>
+        <argument>da</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.lb.xlf</argument>
+        <argument>lb</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.he.xlf</argument>
+        <argument>he</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.cs.xlf</argument>
+        <argument>cs</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.fi.xlf</argument>
+        <argument>fi</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.ro.xlf</argument>
+        <argument>ro</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.nb.xlf</argument>
+        <argument>nb</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.pl.xlf</argument>
+        <argument>pl</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.zh_CN.xlf</argument>
+        <argument>zh_CN</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.sk.xlf</argument>
+        <argument>sk</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.ca.xlf</argument>
+        <argument>ca</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.mn.xlf</argument>
+        <argument>mn</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.sv.xlf</argument>
+        <argument>sv</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Validator/Resources/translations/validators.eu.xlf</argument>
+        <argument>eu</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.ua.xlf</argument>
+        <argument>ua</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.es.xlf</argument>
+        <argument>es</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.it.xlf</argument>
+        <argument>it</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.id.xlf</argument>
+        <argument>id</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.pt.xlf</argument>
+        <argument>pt</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.fr.xlf</argument>
+        <argument>fr</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.ru.xlf</argument>
+        <argument>ru</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.en.xlf</argument>
+        <argument>en</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.et.xlf</argument>
+        <argument>et</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.fa.xlf</argument>
+        <argument>fa</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.lt.xlf</argument>
+        <argument>lt</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.hy.xlf</argument>
+        <argument>hy</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.de.xlf</argument>
+        <argument>de</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.hr.xlf</argument>
+        <argument>hr</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.ja.xlf</argument>
+        <argument>ja</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.pt_BR.xlf</argument>
+        <argument>pt_BR</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.nl.xlf</argument>
+        <argument>nl</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.hu.xlf</argument>
+        <argument>hu</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.sr_Latn.xlf</argument>
+        <argument>sr_Latn</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.bg.xlf</argument>
+        <argument>bg</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.sl.xlf</argument>
+        <argument>sl</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.sr_Cyrl.xlf</argument>
+        <argument>sr_Cyrl</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.da.xlf</argument>
+        <argument>da</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.lb.xlf</argument>
+        <argument>lb</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.he.xlf</argument>
+        <argument>he</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.cs.xlf</argument>
+        <argument>cs</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.fi.xlf</argument>
+        <argument>fi</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.ro.xlf</argument>
+        <argument>ro</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.nb.xlf</argument>
+        <argument>nb</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.pl.xlf</argument>
+        <argument>pl</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.zh_CN.xlf</argument>
+        <argument>zh_CN</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.sk.xlf</argument>
+        <argument>sk</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.ca.xlf</argument>
+        <argument>ca</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.mn.xlf</argument>
+        <argument>mn</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.sv.xlf</argument>
+        <argument>sv</argument>
+        <argument>validators</argument>
+      </call>
+      <call method="addResource">
+        <argument>xlf</argument>
+        <argument>/var/www/Hangman/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/translations/validators.eu.xlf</argument>
+        <argument>eu</argument>
+        <argument>validators</argument>
+      </call>
     </service>
-    <service id="translator" class="Symfony\Component\Translation\IdentityTranslator">
-      <argument type="service" id="translator.selector"/>
-    </service>
-    <service id="translator.selector" class="Symfony\Component\Translation\MessageSelector" public="false"/>
     <service id="translation.loader.php" class="Symfony\Component\Translation\Loader\PhpFileLoader">
       <tag name="translation.loader" alias="php"/>
     </service>
@@ -1184,6 +1623,11 @@
       </argument>
       <argument>null</argument>
     </service>
+    <service id="esi" class="Symfony\Component\HttpKernel\HttpCache\Esi"/>
+    <service id="esi_listener" class="Symfony\Component\HttpKernel\EventListener\EsiListener">
+      <tag name="kernel.event_subscriber"/>
+      <argument type="service" id="esi"/>
+    </service>
     <service id="profiler" class="Symfony\Component\HttpKernel\Profiler\Profiler">
       <tag name="monolog.logger" channel="profiler"/>
       <argument type="service">
@@ -1438,7 +1882,7 @@
     </service>
     <service id="templating.helper.translator" class="Symfony\Bundle\FrameworkBundle\Templating\Helper\TranslatorHelper">
       <tag name="templating.helper" alias="translator"/>
-      <argument type="service" id="translator"/>
+      <argument type="service" id="translator.default"/>
     </service>
     <service id="templating.helper.form" class="Symfony\Bundle\FrameworkBundle\Templating\Helper\FormHelper">
       <tag name="templating.helper" alias="form"/>
@@ -1505,7 +1949,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>50b6057235df5</argument>
+            <argument>50b634bf98dc9</argument>
           </service>
         </argument>
       </argument>
@@ -1569,7 +2013,7 @@
           <argument type="collection">
             <argument key="security.firewall.map.context.dev" type="service">
               <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-                <argument>^/(_(profiler|wdt)|css|images|js)/</argument>
+                <argument>^/(_(profiler|wdt|internal)|css|images|js)/</argument>
               </service>
             </argument>
             <argument key="security.firewall.map.context.frontend" type="service">
@@ -1631,6 +2075,20 @@
                   </argument>
                   <argument type="collection">
                     <argument>IS_AUTHENTICATED_FULLY</argument>
+                  </argument>
+                  <argument>null</argument>
+                </call>
+                <call method="add">
+                  <argument type="service">
+                    <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
+                      <argument>^/_internal/secure</argument>
+                      <argument>null</argument>
+                      <argument>null</argument>
+                      <argument>127.0.0.1</argument>
+                    </service>
+                  </argument>
+                  <argument type="collection">
+                    <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
                   </argument>
                   <argument>null</argument>
                 </call>
@@ -1758,7 +2216,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>50b6057235df5</argument>
+            <argument>50b634bf98dc9</argument>
             <argument type="service" id="monolog.logger.security"/>
           </service>
         </argument>
@@ -1777,6 +2235,20 @@
                   </argument>
                   <argument type="collection">
                     <argument>IS_AUTHENTICATED_FULLY</argument>
+                  </argument>
+                  <argument>null</argument>
+                </call>
+                <call method="add">
+                  <argument type="service">
+                    <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
+                      <argument>^/_internal/secure</argument>
+                      <argument>null</argument>
+                      <argument>null</argument>
+                      <argument>127.0.0.1</argument>
+                    </service>
+                  </argument>
+                  <argument type="collection">
+                    <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
                   </argument>
                   <argument>null</argument>
                 </call>
@@ -1847,7 +2319,7 @@
         <argument type="service">
           <service class="Symfony\Bridge\Twig\Extension\TranslationExtension" public="false">
             <tag name="twig.extension"/>
-            <argument type="service" id="translator"/>
+            <argument type="service" id="translator.default"/>
           </service>
         </argument>
       </call>
@@ -2135,8 +2607,8 @@
     <service id="doctrine.orm.default_manager_configurator" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator">
       <argument type="collection"/>
     </service>
-    <service id="doctrine.orm.default_entity_manager" class="EntityManager50b605724c3e3_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager">
-      <file>/var/www/Hangman/app/cache/dev/jms_diextra/doctrine/EntityManager_50b605724c3e3.php</file>
+    <service id="doctrine.orm.default_entity_manager" class="EntityManager50b634c0020b4_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager">
+      <file>/var/www/Hangman/app/cache/dev/jms_diextra/doctrine/EntityManager_50b634c0020b4.php</file>
       <argument type="service">
         <service class="Doctrine\ORM\EntityManager" factory-method="create" public="false">
           <argument type="service" id="doctrine.dbal.default_connection"/>
@@ -2620,6 +3092,7 @@
     </service>
     <service id="debug.event_dispatcher" alias="event_dispatcher"/>
     <service id="session.storage" alias="session.storage.native"/>
+    <service id="translator" alias="translator.default"/>
     <service id="debug.templating.engine.twig" alias="templating"/>
     <service id="database_connection" alias="doctrine.dbal.default_connection"/>
     <service id="doctrine.orm.entity_manager" alias="doctrine.orm.default_entity_manager"/>

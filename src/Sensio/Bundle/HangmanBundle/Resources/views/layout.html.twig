@@ -19,13 +19,13 @@
                 <div id="menu">
                     <ul>
                         <li class="first current_page_item">
-                            <a href="#">Homepage</a>
+                            <a href="{{ path('hangman_game') }}">Homepage</a>
                         </li>
                         <li>
-                            <a href="#">Register</a>
+                            <a href="{{ path('registration') }}">Register</a>
                         </li>
                         <li>
-                            <a href="#">Login</a>
+                            <a href="{{ path('signin') }}">Login</a>
                         </li>
                         <li>
                             <a href="#">Top10</a>
@@ -53,7 +53,10 @@
                     </div>
                     <h3>Last players</h3>
                     <p>
-                        Urna dis suscipit lorem sed luctus. Elementum suspendisse tempus fermentum ornare libero phasellus nibh conseuqat dolore.
+                    {%
+                        render "SensioHangmanBundle:Player:players"
+                        with { 'max': 10 }, { 'standalone' : true }
+                    %}
                     </p>
                 </div>
                 <br class="clearfix" />

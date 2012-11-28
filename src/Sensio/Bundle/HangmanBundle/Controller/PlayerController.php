@@ -14,6 +14,21 @@ use Sensio\Bundle\HangmanBundle\Form\PlayerType;
 
 class PlayerController extends Controller
 {
+    public function playersAction($max)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('SensioHangmanBundle:Player');
+
+        $response = $this->render(
+            'SensioHangmanBundle:Player:players.html.twig',
+            array('players' => $repository->getMostRecentPlayers($max))
+        );
+        //$response->setPublic();
+        //$response->setSharedMaxAge(120);
+
+        return $response;
+    }
+
     /**
      * @Template()
      */
@@ -101,7 +116,7 @@ class PlayerController extends Controller
      * Creates a new Player entity.
      *
      * @Route("/create", name="registration")
-     * @Method("POST")
+     * @Method("POST|GET")
      * @Template("SensioHangmanBundle:Player:signup.html.twig")
      */
     public function createAction(Request $request)
@@ -111,7 +126,7 @@ class PlayerController extends Controller
         }
 
         $form = $this->createForm(new PlayerType(), null , array (
-            'validation_groups' => array('Signup')
+            'validation_groups' => array('signup')
         ));
         $form->bind($request);
 

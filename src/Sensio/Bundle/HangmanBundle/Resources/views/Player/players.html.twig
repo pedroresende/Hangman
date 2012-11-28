@@ -1,0 +1,11 @@
+<ul>
+    {% for player in players %}
+        <li>
+            {{ player.username }}
+        </li>
+    {% else %}
+        <li>
+            No players yet!
+        </li>
+    {% endfor %}
+</ul>
