@@ -1,0 +1,19 @@
+{% extends "SensioHangmanBundle::layout.html.twig" %}
+
+{% form_theme form with "form_table_layout.html.twig" %}
+
+{% block title "Free Registration" %}
+
+{% block body %}
+
+<h2>Signup for free</h2>
+
+<form action="{{ path('registration') }}" method="POST" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+    <br/>
+    <div>
+        <button type="submit">Signup</button>
+    </div>
+</form>
+
+{% endblock body %}
