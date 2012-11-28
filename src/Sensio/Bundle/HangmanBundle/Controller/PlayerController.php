@@ -3,6 +3,7 @@
 namespace Sensio\Bundle\HangmanBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -13,6 +14,31 @@ use Sensio\Bundle\HangmanBundle\Form\PlayerType;
 
 class PlayerController extends Controller
 {
+    /**
+     * @Template()
+     */
+    public function signinAction(Request $request)
+    {
+        if ($response = $this->skipIfAuthenticated()) {
+            return $response;
+        }
+
+        $session = $request->getSession();
+
+        if ($error = $session->get(securityContext::AUTHENTICATION_ERROR)) 
+        {
+            $session->remove(SecurityContext::AUTHENTICATION_ERROR);
+        } 
+
+        if ($username = $session->get(securityContext::LAST_USERNAME)) 
+        {
+            $session->remove(SecurityContext::LAST_USERNAME);
+        } 
+
+        return array('error' =>$error , 'last_username' => $username );
+    }
+
+
     /**
      * Lists all Player entities.
      *
@@ -62,6 +88,10 @@ class PlayerController extends Controller
      */
     public function signupAction()
     {
+        if ($response = $this->skipIfAuthenticated()) {
+            return $response;
+        }
+
         $form   = $this->createForm(new PlayerType());
 
         return array( 'form'   => $form->createView()  );
@@ -76,6 +106,10 @@ class PlayerController extends Controller
      */
     public function createAction(Request $request)
     {
+        if ($response = $this->skipIfAuthenticated()) {
+            return $response;
+        }
+
         $form = $this->createForm(new PlayerType(), null , array (
             'validation_groups' => array('Signup')
         ));
@@ -83,6 +117,11 @@ class PlayerController extends Controller
 
         if ($form->isValid()) {
             $player = $form->getData();
+
+            $factory = $this->get('security.encoder_factory');
+            $encoder = $factory->getEncoder($player);
+
+            $player->encodePassword($encoder);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($player);
@@ -187,5 +226,14 @@ class PlayerController extends Controller
             ->add('id', 'hidden')
             ->getForm()
         ;
+    }
+
+    private function skipIfAuthenticated()
+    {
+        $context = $this->get('security.context');
+        if ($context->isGranted('IS_AUTHENTICATED_FULLY')) {
+
+            return $this->redirect($this->generateUrl('hangman_game'));
+        }
     }
 }

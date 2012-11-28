@@ -3,6 +3,8 @@
 namespace Sensio\Bundle\HangmanBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -23,7 +25,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  * 
  */
-class Player
+class Player implements UserInterface
 {
     /**
      * @var integer $id
@@ -115,12 +117,34 @@ class Player
         $this->expiresAt = new \DateTime('+30 days');
     }
 
+
+    public function eraseCredentials()
+    {
+        $this->rawPassword = null;
+    }
+
+    public function getRoles()
+    {
+        return $this->isAdmin ? array('ROLE_ADMIN') : array( 'ROLE_ALLOWED_TO_SWITCH' );
+    }
+
     public function setRawPassword($password)
     {
         $this->rawPassword = $password;
     }
 
-
+    public function encodePassword(PasswordEncoderInterface $encoder)
+    {
+        if ($this->rawPassword)
+        {
+            $this->salt = sha1(uniqid(mt_rand(0, 999999).$this->username));
+            $this->password = $encoder->encodePassword(
+                $this->rawPassword,
+                $this->salt
+            );
+            $this->eraseCredentials();
+        }
+    }
     /**
      *
      * @Assert\True(

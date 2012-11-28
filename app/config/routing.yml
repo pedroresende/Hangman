@@ -1,11 +1,22 @@
 homepage:
     pattern: /
-    defaults: { _controller: SensioHangmanBundle:Game:index }
+    defaults: { _controller: SensioHangmanBundle:Player:signup }
 
 SensioHangmanBundle:
     resource: "@SensioHangmanBundle/Controller/"
     type: annotation
     prefix: /
+
+signin:
+    pattern: /signin
+    defaults: { _controller: SensioHangmanBundle:Player:signin }
+
+signout:
+    pattern: /signout
+
+login_check:
+    pattern: /auth
+    requirements: { _method: POST }
 
 # Internal routing configuration to handle ESI
 #_internal:
